@@ -1,7 +1,7 @@
 /*
 C Exercise 2 Starter
 CS 325
-Lonnie Bowe
+Adele Bosma
 */
 
 #include <stdio.h>
@@ -17,7 +17,7 @@ static char* breakBefore(char[], char);
 static char* breakAfter(char[], char);
 
 int main(void){
-    char theString[] = "22534\0"; //should give you 111111111111110, you should try other numbers
+    char theString[] = "22534\0"; 
 
     long stringConversion = strtol(theString, NULL, 10);
     int num = (int)stringConversion;
@@ -92,10 +92,6 @@ static char* intToBinary(int num){
         num = floor(num / 2);
     }
 
-    //set position to 14
-    //Use division and modulus to put the binary number in the array
-        //Advice: position--
-
     result[15] = '\0';
     return result;
 }
@@ -104,13 +100,13 @@ static char* intToBinary(int num){
 static char* breakBefore(char string[], char breakChar){
     size_t breakHere = strcspn(string, &breakChar);
     if (breakHere == strlen(string)) {
-        return "Error";
+        return NULL;
     }
 
     char* daString  = (char*)malloc((breakHere+1)*sizeof(char));
     if (!daString) {
         free(daString);
-        return "Malloc error";
+        return NULL;
     }
 
     for (int i = 0; i < breakHere; i++) {
@@ -118,28 +114,6 @@ static char* breakBefore(char string[], char breakChar){
     }
     daString[breakHere] = '\0';
     return daString;
-    //set position to -1
-
-    /*
-    find the position of the breakChar -> use a loop
-    there might not be a breakChar, but there will be no more than 1
-    */
-
-    //if the position is greater than -1
-
-        //malloc room for the result and the \0: hint: position + 1
-
-        /*
-        use a loop to copy from the original string into
-        the new memory up to the break char
-        */
-
-        //set the last position of the new memory to '\0'
-
-        //return the new string
-
-    //otherwise, return NULL
-    return NULL;
 }
 
 
@@ -148,13 +122,13 @@ static char* breakAfter(char string[], char breakChar){
     size_t breakHere = strcspn(string, &breakChar);
     size_t size = strlen(string);
     if (breakHere == strlen(string)) {
-        return "Error";
+        return NULL;
     }
 
     char* daString  = (char*)malloc(((size - breakHere)+1)*sizeof(char));
     if (!daString) {
         free(daString);
-        return "Malloc error";
+        return NULL;
     }
 
     for (int i = breakHere+1; i < size; i++) {
@@ -162,38 +136,8 @@ static char* breakAfter(char string[], char breakChar){
     }
     daString[size-breakHere] = '\0';
     return daString;
-    //set position to -1
-
-    /*
-    find the position of the breakChar -> use a loop
-    there might not be a breakChar, but there will be no more than 1
-    */
-
-    //if the position is greater than -1
-        /*
-            malloc room for the new string.
-            this is harder than breakBefore
-            you have to calculate from where you found the breakChar
-            to the end of the string
-            don't forget the \0 needs to have room
-        */
-
-        /*
-            copy the result into the new string
-            this is also more complicated than breakBefore
-            in that one, 0 went to 0, 1 went to 1
-            but here, you might be copying position 10 into position 0
-            hint: use a second variable to keep track of where you are in the
-            original string.
-        */
-
-        //set the last position of the new string to \0
-        //return the new string
-
-  //otherwise, return null
-  return NULL;
-
 }
+
 
 
 
