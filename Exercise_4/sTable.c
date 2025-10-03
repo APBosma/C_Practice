@@ -72,12 +72,18 @@ static void sTableGrow(SymbolTable* table) {
     // Free table->data
     // data = temp so it points at temp
     // Update the capacity
-
     Symbol* tempTable = malloc(sizeof(Symbol)*(table->capacity*2));
-    for(int i = 0; i < table->size; i++) {
-        tempTable[i] = table->data[i];
+
+    if (table->data != NULL) {
+        for(int i = 0; i < table->size; i++) {
+            tempTable[i] = table->data[i];
+        }
+        free(table->data);
+        table->data = NULL;
     }
-    free(table->data);
+    else {
+        free(tempTable);
+    }
     table->data = tempTable;
     table->capacity *= 2;
 }
@@ -103,18 +109,18 @@ static int sTablePut(SymbolTable* table, char* key, int value){
         // Add 1 to size
         // return 1 for success
     if (table->data == NULL) {
-        Symbol* tempTable = malloc(sizeof(Symbol)*1);
+        Symbol* tempTable = (Symbol*)malloc(sizeof(Symbol));
         table ->data = tempTable;
         table ->capacity += 1;
-        free(tempTable);
     }
     if (table->size == table->capacity) {
         sTableGrow(table);
     }
-    Symbol* temp = malloc(sizeof(Symbol));
-    temp->value = value;
-    temp->key = key;
-    table->data[table->size] = *temp;
+    //instead of using a pointer, this way is okay
+    table->data[table->size].value = value;
+    table->data[table->size].key = malloc(sizeof(char) * (strlen(key) + 1));
+    snprintf(table->data[table->size].key, strlen(key)+1, "%s", key); //changed this to snprintf
+
     table->size++;
     return 1;
 }
